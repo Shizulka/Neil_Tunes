@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from src.Infrastructure.database import get_db 
-from src.Service.user_service import SongService
+from src.Service.song_service import SongService
 
 
 router = APIRouter()
