@@ -2,6 +2,7 @@ from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy import text
 from contextlib import asynccontextmanager
+from src.Controller import user_control
 from src.Infrastructure.database import get_db, db_ping
 
 @asynccontextmanager
@@ -22,6 +23,7 @@ def health_check(db: Session = Depends(get_db)):
     except Exception as e:
         raise HTTPException(status_code=503, detail=str(e))
     
+app.include_router(user_control.router)
 
 @app.get("/")
 def root():
