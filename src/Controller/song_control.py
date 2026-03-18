@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import UTC, datetime
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
@@ -12,6 +12,11 @@ router = APIRouter()
 def create_song  ( name : str , album: str , release_date: str , db: Session = Depends(get_db)):
     service = SongService(db)
     song = service.create_song(name=name, album=album, release_date=release_date)
+    date_obj = datetime.strptime(release_date, "%d.%m.%Y").date()
+    
+    if date_obj > datetime.now(UTC).date():
+        raise HTTPException(status_code=400, detail="Release date cannot be in the future")
+
 
     return { "name": song.name , "album" : song.album , "release_date" :  song.release_date }
 
